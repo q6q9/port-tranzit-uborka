@@ -1,3 +1,21 @@
+.wrapper {
+    width: 365px;
+}
+
+.help-block {
+    color: red;
+}
+
+.bg-gray{
+    background-color: #EEEEEE;
+}
+
+.btn-gray {
+    font-weight: bold;
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+}
+
 main > .container {
     padding: 70px 15px 20px;
 }
