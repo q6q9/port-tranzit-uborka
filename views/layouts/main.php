@@ -27,18 +27,18 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrapper d-flex flex-column align-items-center shadow rounded px-3 pb-5 pt-4 my-1">
-    <div class="w-100">
-    <header class="d-flex mb-3 justify-content-end">
-        <img src="/images/pt-logo.svg">
-        <div class="title d-flex flex-column    ">
-            <div class="top ml-3 mb-2">
-                <img src="/images/Port.svg">
-                <img src="/images/Tranzit.svg">
+    <div class="w-100 h-100">
+        <header class="d-flex mb-3 justify-content-end">
+            <img src="/images/pt-logo.svg">
+            <div class="title d-flex flex-column    ">
+                <div class="top ml-3 mb-2">
+                    <img src="/images/Port.svg">
+                    <img src="/images/Tranzit.svg">
+                </div>
+                <img src="/images/экспедирование.svg">
             </div>
-            <img src="/images/экспедирование.svg">
-        </div>
-    </header>
-    <?=$content?>
+        </header>
+        <?= $content ?>
     </div>
 </div>
 
