@@ -15,7 +15,7 @@ $this->title = 'Анкета';
     ]) ?>
 
     <div class="d-flex justify-content-between" style="margin-bottom: -25px">
-        <?= \yii\helpers\Html::a('< назад', Yii::$app->request->referrer) ?>
+        <?= \yii\helpers\Html::a('< назад', '/2') ?>
         <p>Моя заявка</p>
     </div>
     <hr>
