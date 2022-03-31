@@ -7,14 +7,14 @@ use yii\web\Cookie;
 
 class FirstForm extends Model
 {
-    const TYPE_TOK = 'typeTok';
-    const TYPE_ELEVATOR = 'typeElevator';
+    const TYPE_TOK = 'C поля на ток/элеватор';
+    const TYPE_ELEVATOR = 'С тока/элеватора в порт';
 
     const NUMBER = 1;
 
     public static $types = [
-        self::TYPE_TOK => 'C поля на ток/элеватор',
-        self::TYPE_ELEVATOR => 'С тока/элеватора в порт '
+        self::TYPE_TOK => self::TYPE_TOK,
+        self::TYPE_ELEVATOR => self::TYPE_ELEVATOR
     ];
 
     public $type;
