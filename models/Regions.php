@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "regions".
  *
  * @property int $id
+ * @property string|null $name
  *
  * @property Districts[] $districts
  */
@@ -26,7 +27,9 @@ class Regions extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [];
+        return [
+            [['name'], 'string', 'max' => 255],
+        ];
     }
 
     /**
@@ -36,6 +39,7 @@ class Regions extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'name' => 'Name',
         ];
     }
 

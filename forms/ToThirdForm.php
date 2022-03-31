@@ -8,9 +8,9 @@ use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\web\Cookie;
 
-class SecondForm extends Model
+class ToThirdForm extends Model
 {
-    const NUMBER = 2;
+    const NUMBER = 3;
 
     public static $autoTypes = [
         'Сельхозник',
@@ -18,11 +18,13 @@ class SecondForm extends Model
         'Бортовой трал',
     ];
 
+    public $number;
+
     public $auto;
 
     public $region;
 
-    public $district_id;
+    public $district;
 
     /**
      * @var FirstForm
@@ -32,36 +34,31 @@ class SecondForm extends Model
     public function rules()
     {
         return [
-            [['auto', 'region', 'district_id'], 'required'],
+            [['auto', 'region', 'district'], 'required'],
             [['auto'], 'in', 'range' => self::$autoTypes],
-            [['district_id'], 'exist', 'targetClass' => Districts::class, 'targetAttribute' => ['district_id' => 'id']],
+            [['region'], 'exist', 'targetClass' => Regions::class, 'targetAttribute' => ['region' => 'name']],
+            [['district'], 'exist', 'targetClass' => Districts::class, 'targetAttribute' => ['district' => 'name']],
         ];
     }
 
     public function run()
     {
-        if (!$this->validate() && empty($this->district_id) && empty($this->auto)) {
-            $attributes = json_decode(
-                    \Yii::$app->request->cookies->getValue('secondForm', ''),
-                    true
-                ) ?? [];
+        $cookies = \Yii::$app->response->cookies;
+
+        if (!$this->validate() && empty($this->attributes)) {
+            $attributes = json_decode($cookies->getValue('secondForm', []));
             $this->attributes = $attributes;
         }
 
-        if (!$this->validate() || $this->firstForm->number == self::NUMBER) {
+        if ($this->validate() || $this->number == self::NUMBER) {
             $this->clearErrors();
 
             $regions = Regions::find()->all();
 
 
-            if ($district = Districts::findOne($this->district_id)) {
-                $districts = ArrayHelper::map($district->region->districts, 'id', 'name');
-            }
-
             return \Yii::$app->controller->render('second', [
                 'form' => $this,
                 'regions' => ArrayHelper::map($regions, 'id', 'name'),
-                'districts' => $districts ?? [],
                 'cars' => array_combine(
                     self::$autoTypes,
                     self::$autoTypes
@@ -69,20 +66,15 @@ class SecondForm extends Model
             ]);
         }
 
-
-        \Yii::$app->response->cookies->add(new Cookie([
+        $cookies->add(new Cookie([
             'name' => 'secondForm',
             'value' => json_encode($this->attributes),
-            'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
-        $nextFormClass = $this->firstForm->type === FirstForm::FROM_TOK_ELEVATOR
-            ? FromThirdForm::class
-            : ToThirdForm::class;
-
         $nextForm = \Yii::createObject([
-            'class' => $nextFormClass,
+            'class' => SecondForm::class,
             'secondForm' => $this,
+            'number' => SecondForm::NUMBER
         ]);
         $nextForm->load(\Yii::$app->request->post());
         return $nextForm->run();

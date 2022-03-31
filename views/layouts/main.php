@@ -26,7 +26,7 @@ AppAsset::register($this);
 <body class="d-flex align-content-center justify-content-center  fy-content-center p-5">
 <?php $this->beginBody() ?>
 
-<div class="wrapper d-flex flex-column align-items-center shadow rounded px-3 pb-5 pt-4 my-1">
+<div class="wrapper d-flex flex-column align-items-center shadow rounded <!--px-3 pb-5 pt-4--> my-1">
     <div class="w-100 h-100">
         <header class="d-flex mb-3 justify-content-end">
             <img src="/images/pt-logo.svg">

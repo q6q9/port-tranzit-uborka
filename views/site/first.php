@@ -4,8 +4,6 @@
 
 /** @var \app\forms\FirstForm $form */
 
-use yii\helpers\Html;
-
 $this->title = 'Анкета';
 
 ?>
@@ -14,7 +12,7 @@ $this->title = 'Анкета';
         'method' => 'POST',
         'action' => \yii\helpers\Url::to(['/2']),
         'options' => [
-            'class' => 'd-flex justify-content-center flex-column',
+            'class' => 'd-flex flex-column',
             'id' => 'form',
             'style' => 'flex: 1 1 auto'
         ]

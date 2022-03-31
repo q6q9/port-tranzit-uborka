@@ -1,6 +1,34 @@
 .wrapper {
     width: 375px;
-    height: 667px;
+    min-height: 667px;
+    padding: 37px 26px 56px 26px;
+}
+
+.modal-header {
+    border-bottom: 0 none;
+}
+
+.close {
+    display: none;
+}
+
+.modal-footer {
+    border-top: 0 none;
+}
+
+.modal-header {
+    padding-bottom: 0;
+}
+
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+.modal-content {
+    padding: 10px;
+    width: 300px;
+    height: 490px;
 }
 
 .help-block {

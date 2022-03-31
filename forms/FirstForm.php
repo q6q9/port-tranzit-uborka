@@ -7,14 +7,14 @@ use yii\web\Cookie;
 
 class FirstForm extends Model
 {
-    const TYPE_TOK = 'C поля на ток/элеватор';
-    const TYPE_ELEVATOR = 'С тока/элеватора в порт';
+    const TO_TOK_ELEVATOR = 'C поля на ток/элеватор';
+    const FROM_TOK_ELEVATOR = 'С тока/элеватора в порт';
 
     const NUMBER = 1;
 
     public static $types = [
-        self::TYPE_TOK => self::TYPE_TOK,
-        self::TYPE_ELEVATOR => self::TYPE_ELEVATOR
+        self::TO_TOK_ELEVATOR => self::TO_TOK_ELEVATOR,
+        self::FROM_TOK_ELEVATOR => self::FROM_TOK_ELEVATOR
     ];
 
     public $type;
@@ -35,7 +35,7 @@ class FirstForm extends Model
             $attributes = json_decode(
                 \Yii::$app->request->cookies->getValue('firstForm', ''),
                 true
-            );
+            ) ?? [];
             $this->attributes = $attributes;
         }
 
@@ -55,7 +55,6 @@ class FirstForm extends Model
         $nextForm = \Yii::createObject([
             'class' => SecondForm::class,
             'firstForm' => $this,
-            'number' => SecondForm::NUMBER
         ]);
         $nextForm->load(\Yii::$app->request->post());
         return $nextForm->run();
