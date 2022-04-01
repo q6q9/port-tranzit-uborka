@@ -94,7 +94,8 @@ $this->title = 'Анкета';
     <p class="font-weight-bold" style="font-size: 30px; margin-bottom: 10px">
     <span id="setting_price">0</span> руб/т</p>
 </div>
-HTML,
+HTML
+    ,
     'id' => 'modal',
 ]);
 
@@ -149,7 +150,7 @@ HTML;
         ) {
             return
         }
-        buttonChangePrice.click(()=> {
+        buttonChangePrice.click(() => {
             modal.modal('toggle')
             elem.focus()
         })

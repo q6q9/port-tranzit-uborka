@@ -74,10 +74,9 @@ class FromThirdForm extends Model
             'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
-        die(json_encode($this));
         $nextForm = \Yii::createObject([
-            'class' => SecondForm::class,
-            'firstForm' => $this,
+            'class' => FromFourthForm::class,
+            'fromThirdForm' => $this,
         ]);
         $nextForm->load(\Yii::$app->request->post());
         return $nextForm->run();
