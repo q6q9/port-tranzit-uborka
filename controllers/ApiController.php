@@ -20,7 +20,6 @@ class ApiController extends Controller
         if (!Yii::$app->request->isPost) {
             throw new BadRequestHttpException();
         }
-
         $service = new SmsService();
         $service->sendGeneratedCode($phone);
     }

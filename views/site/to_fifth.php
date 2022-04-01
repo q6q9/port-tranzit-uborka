@@ -2,31 +2,31 @@
 
 /** @var yii\web\View $this */
 
-/** @var FromFourthForm $form */
+/** @var app\forms\ToFifthForm $form */
 
 /** @var Districts $district */
 
 use app\forms\FirstForm;
-use app\forms\FromFourthForm;
 use app\models\Districts;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$fromThirdForm = $form->fromThirdForm;
-$secondForm = $fromThirdForm->secondForm;
+$toFourthForm = $form->toFourthForm;
+$toThirdForm = $toFourthForm->toThirdForm;
+$secondForm = $toThirdForm->secondForm;
 
 $this->title = 'Анкета';
 ?>
 <div class="d-flex flex-column" style="min-height: 100%">
     <?php $activeForm = ActiveForm::begin([
-        'action' => Url::to(['/5']),
+        'action' => Url::to(['/6']),
         'method' => 'POST',
         'options' => ['style' => 'flex: 1 1 auto', 'id' => 'form']
     ]) ?>
 
     <div class="d-flex justify-content-between" style="margin-bottom: -25px">
-        <?= Html::a('< назад', '/3') ?>
+        <?= Html::a('< назад', '/4') ?>
         <p>Моя заявка</p>
     </div>
     <hr>
@@ -56,26 +56,51 @@ $this->title = 'Анкета';
     </div>
 
     <hr class="mb-4">
+    <div class="d-flex justify-content-between">
+        <div class="w-50 mr-4">
+            <div class="d-flex justify-content-between" style="line-height: 14px;">
+                <p>0-10</p>
+                <p class="font-weight-bold">
+                    <?= $toThirdForm->price_0_10 ?> руб/т
+                </p>
+            </div>
 
-    <div class="d-flex justify-content-between" style="line-height: 14px;">
-        <p>Новороссийск</p>
-        <p class="font-weight-bold">
-            <?= $fromThirdForm->novorossiyskPrice ?> руб/т
-        </p>
-    </div>
+            <div class="d-flex justify-content-between" style="line-height: 14px;">
+                <p>10-20</p>
+                <p class="font-weight-bold">
+                    <?= $toThirdForm->price_10_20 ?> руб/т
+                </p>
+            </div>
 
-    <div class="d-flex justify-content-between" style="line-height: 14px;">
-        <p>Азов</p>
-        <p class="font-weight-bold">
-            <?= $fromThirdForm->azovPrice ?> руб/т
-        </p>
-    </div>
+            <div class="d-flex justify-content-between mb-4" style="line-height: 14px;">
+                <p>20-40</p>
+                <p class="font-weight-bold">
+                    <?= $toThirdForm->price_20_40 ?> руб/т
+                </p>
+            </div>
+        </div>
+        <div class="w-50 ml-4">
+            <div class="d-flex justify-content-between" style="line-height: 14px;">
+                <p>40-60</p>
+                <p class="font-weight-bold">
+                    <?= $toFourthForm->price_40_60 ?> руб/т
+                </p>
+            </div>
 
-    <div class="d-flex justify-content-between mb-4" style="line-height: 14px;">
-        <p>Волна</p>
-        <p class="font-weight-bold">
-            <?= $fromThirdForm->volnaPrice ?> руб/т
-        </p>
+            <div class="d-flex justify-content-between" style="line-height: 14px;">
+                <p>60-80</p>
+                <p class="font-weight-bold">
+                    <?= $toFourthForm->price_60_80 ?> руб/т
+                </p>
+            </div>
+
+            <div class="d-flex justify-content-between mb-4" style="line-height: 14px;">
+                <p>80-100</p>
+                <p class="font-weight-bold">
+                    <?= $toFourthForm->price_80_100 ?> руб/т
+                </p>
+            </div>
+        </div>
     </div>
 
     <?= $activeForm->field($form, 'phone', ['options' => [
@@ -112,7 +137,6 @@ $this->title = 'Анкета';
             e.preventDefault()
 
             const phone = $('#phone').val()
-
             if (!phone || phone == globalPhone) {
                 return;
             }
@@ -134,7 +158,7 @@ $this->title = 'Анкета';
         try {
             let data = {}
             data[param] = token;
-            return await $.ajax({
+            return $.ajax({
                 url: '/api/send-code?phone=' + phone,
                 type: 'POST',
                 data: data

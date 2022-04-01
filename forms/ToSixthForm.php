@@ -8,16 +8,16 @@ use app\services\SmsService;
 use Yii;
 use yii\base\Model;
 
-class FromFifthForm extends Model
+class ToSixthForm extends Model
 {
-    const NUMBER = 5;
+    const NUMBER = 6;
 
     public $code;
 
     /**
-     * @var FromFourthForm
+     * @var ToFifthForm
      */
-    public $fromFourthForm;
+    public $toFifthForm;
 
     /**
      * @var SmsService
@@ -44,7 +44,7 @@ class FromFifthForm extends Model
             return $this->render();
         }
 
-        $checkCode = $this->smsService->checkCode($this->fromFourthForm->phone, $this->code);
+        $checkCode = $this->smsService->checkCode($this->toFifthForm->phone, $this->code);
         if (!$checkCode) {
             $this->addError('code', 'Incorrect code');
             return $this->render();
@@ -64,10 +64,10 @@ class FromFifthForm extends Model
         /** @var Districts $district */
         $district = Districts::find()
             ->with('region')
-            ->andWhere($this->fromFourthForm->fromThirdForm->secondForm->district_id)
+            ->andWhere($this->toFifthForm->toFourthForm->toThirdForm->secondForm->district_id)
             ->one();
 
-        return Yii::$app->controller->render('from_fifth', [
+        return Yii::$app->controller->render('to_sixth', [
             'form' => $this,
             'district' => $district,
         ]);
@@ -76,7 +76,7 @@ class FromFifthForm extends Model
     private function updateSurvey()
     {
         $survey = Surveys::findOne([
-            'phone' => mb_ereg_replace('[^0-9]', '', $this->fromFourthForm->phone)
+            'phone' => mb_ereg_replace('[^0-9]', '', $this->toFifthForm->phone)
         ]);
         $survey->code = $this->code;
         $survey->update(false);

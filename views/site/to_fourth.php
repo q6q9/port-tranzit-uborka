@@ -2,42 +2,44 @@
 
 /** @var yii\web\View $this */
 
-/** @var FromThirdForm $form */
+/** @var ToFourthForm $form */
 
 /** @var Districts $district */
 
 use app\forms\FirstForm;
-use app\forms\FromThirdForm;
+use app\forms\ToFourthForm;
 use app\models\Districts;
 use yii\bootstrap4\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+$toThirdForm = $form->toThirdForm;
+$secondForm = $toThirdForm->secondForm;
 $this->title = 'Анкета';
 ?>
 <div class="d-flex flex-column" style="min-height: 100%">
     <?php $activeForm = ActiveForm::begin([
-        'action' => Url::to(['/4']),
+        'action' => Url::to(['/5']),
         'method' => 'POST',
         'options' => ['style' => 'flex: 1 1 auto', 'id' => 'form']
     ]) ?>
 
     <div class="d-flex justify-content-between" style="margin-bottom: -25px">
-        <?= Html::a('< назад', '/2') ?>
+        <?= Html::a('< назад', '/3') ?>
         <p>Моя заявка</p>
     </div>
     <hr>
     <div class="d-flex justify-content-between" style="line-height: 14px;">
         <p>Тип уборки:</p>
         <p class="font-weight-bold">
-            <?= FirstForm::$types[$form->secondForm->firstForm->type] ?>
+            <?= FirstForm::$types[$secondForm->firstForm->type] ?>
         </p>
     </div>
     <div class="d-flex justify-content-between" style="line-height: 14px;">
         <p>Автомобиль:</p>
         <p class="font-weight-bold">
-            <?= $form->secondForm->auto ?>
+            <?= $secondForm->auto ?>
         </p>
     </div>
     <div class="d-flex justify-content-between" style="line-height: 14px;">
@@ -59,31 +61,31 @@ $this->title = 'Анкета';
         руб/т</p>
     <p class="text-center" style="line-height: 18px">С вашего района в следующие порты</p>
 
-    <?= $activeForm->field($form, 'novorossiyskPrice', ['options' => [
+    <?= $activeForm->field($form, 'price_40_60', ['options' => [
         'class' => 'd-flex justify-content-between flex-wrap mb-3'
     ]])
-        ->label('Новороссийск', ['style' => 'flex: 1 0 50%'])
+        ->label('40-60 км', ['style' => 'flex: 1 0 50%'])
         ->input('number', [
             'class' => 'form-control bg-gray w-50',
-            'onkeyup' => 'checkPrice("novorossiysk", this)'
+            'onkeyup' => 'checkPrice("price_40_60", this)'
         ])->error(['style' => 'flex-basis: 100%; text-align: right']) ?>
 
-    <?= $activeForm->field($form, 'azovPrice', ['options' => [
+    <?= $activeForm->field($form, 'price_60_80', ['options' => [
         'class' => 'd-flex justify-content-between flex-wrap mb-3',
     ]])
-        ->label('Азов', ['style' => 'flex: 1 0 50%'])
+        ->label('60-80 км', ['style' => 'flex: 1 0 50%'])
         ->input('number', [
             'class' => 'form-control bg-gray w-50',
-            'onkeyup' => 'checkPrice("azov", this)'
+            'onkeyup' => 'checkPrice("price_60_80", this)'
         ])->error(['style' => 'flex-basis: 100%; text-align: right']) ?>
 
-    <?= $activeForm->field($form, 'volnaPrice', ['options' => [
+    <?= $activeForm->field($form, 'price_80_100', ['options' => [
         'class' => 'd-flex justify-content-between flex-wrap mb-3'
     ]])
-        ->label('Волна', ['style' => 'flex: 1 0 50%'])
+        ->label('80-100 км', ['style' => 'flex: 1 0 50%'])
         ->input('number', [
             'class' => 'form-control bg-gray w-50',
-            'onkeyup' => 'checkPrice("volna", this)'
+            'onkeyup' => 'checkPrice("price_80_100", this)'
         ])->error(['style' => 'flex-basis: 100%; text-align: right']) ?>
 
     <?php ActiveForm::end() ?>
@@ -126,18 +128,18 @@ Modal::end();
 
 
 <script>
-    let cities = {
-        novorossiysk: {
+    let prices = {
+        price_40_60: {
             wasCheck: false,
-            price: <?=getenv('NOVOROSSIYSK_PRICE') ?: 0?>
+            price: <?=getenv('PRICE_40_60') ?: 0?>
         },
-        azov: {
+        price_60_80: {
             wasCheck: false,
-            price: <?=getenv('AZOV_PRICE') ?: 0?>
+            price: <?=getenv('PRICE_60_80') ?: 0?>
         },
-        volna: {
+        price_80_100: {
             wasCheck: false,
-            price: <?=getenv('VOLNA_PRICE') ?: 0?>
+            price: <?=getenv('PRICE_80_100') ?: 0?>
         },
     }
 
@@ -149,13 +151,13 @@ Modal::end();
         buttonChangePrice = $('#btn_change_price')
     })
 
-    function checkPrice(city, elem) {
+    function checkPrice(priceName, elem) {
         let price = elem.value
 
         if (
-            price <= cities[city].price
-            || cities[city].wasCheck
-            || !cities[city].price
+            price <= prices[priceName].price
+            || prices[priceName].wasCheck
+            || !prices[priceName].price
         ) {
             return
         }
@@ -164,10 +166,10 @@ Modal::end();
             elem.focus()
         })
 
-        cities[city].wasCheck = true
+        prices[priceName].wasCheck = true
 
         $('#setting_price').text(price)
-        $('#middle_price').text(cities[city].price)
+        $('#middle_price').text(prices[priceName].price)
 
         modal.modal('toggle')
     }

@@ -8,16 +8,16 @@ use Yii;
 use yii\base\Model;
 use yii\web\Cookie;
 
-class FromFourthForm extends Model
+class ToFifthForm extends Model
 {
-    const NUMBER = 4;
+    const NUMBER = 5;
 
     public $phone;
 
     /**
-     * @var FromThirdForm
+     * @var ToFourthForm
      */
-    public $fromThirdForm;
+    public $toFourthForm;
 
     public function rules()
     {
@@ -35,13 +35,13 @@ class FromFourthForm extends Model
 
         if (!$this->validate() && empty($this->phone)) {
             $attributes = json_decode(
-                    Yii::$app->request->cookies->getValue('fromFourthForm', ''),
+                    Yii::$app->request->cookies->getValue('toFifthForm', ''),
                     true
                 ) ?? [];
             $this->attributes = $attributes;
         }
 
-        $number = $this->fromThirdForm->secondForm->firstForm->number;
+        $number = $this->toFourthForm->toThirdForm->secondForm->firstForm->number;
         if (!$this->validate() || $number == self::NUMBER) {
             $this->clearErrors();
 
@@ -52,10 +52,10 @@ class FromFourthForm extends Model
             /** @var Districts $district */
             $district = Districts::find()
                 ->with('region')
-                ->andWhere($this->fromThirdForm->secondForm->district_id)
+                ->andWhere($this->toFourthForm->toThirdForm->secondForm->district_id)
                 ->one();
 
-            return Yii::$app->controller->render('from_fourth', [
+            return Yii::$app->controller->render('to_fifth', [
                 'form' => $this,
                 'district' => $district,
             ]);
@@ -63,25 +63,43 @@ class FromFourthForm extends Model
 
 
         Yii::$app->response->cookies->add(new Cookie([
-            'name' => 'fromFourthForm',
+            'name' => 'toFifthForm',
             'value' => json_encode($this->attributes),
             'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
         $nextForm = Yii::createObject([
-            'class' => FromFifthForm::class,
-            'fromFourthForm' => $this,
+            'class' => ToSixthForm::class,
+            'toFifthForm' => $this,
         ]);
         $nextForm->load(Yii::$app->request->post());
         return $nextForm->run();
     }
-
 
     public function uniquePhone()
     {
         return !Surveys::find()
             ->andWhere(['phone' => mb_ereg_replace('[^0-9]', '', $this->phone)])
             ->exists();
+    }
+
+    private function saveSurvey()
+    {
+        $survey = new Surveys();
+        $survey->phone = mb_ereg_replace('[^0-9]', '', $this->phone);
+        $survey->type = $this->toFourthForm->toThirdForm->secondForm->firstForm->type;
+        $survey->auto = $this->toFourthForm->toThirdForm->secondForm->auto;
+        $survey->district_id = $this->toFourthForm->toThirdForm->secondForm->district_id;
+
+        $survey->price_0_10 = $this->toFourthForm->toThirdForm->price_0_10;
+        $survey->price_10_20 = $this->toFourthForm->toThirdForm->price_10_20;
+        $survey->price_20_40 = $this->toFourthForm->toThirdForm->price_20_40;
+
+        $survey->price_40_60 = $this->toFourthForm->price_40_60;
+        $survey->price_60_80 = $this->toFourthForm->price_60_80;
+        $survey->price_80_100 = $this->toFourthForm->price_80_100;
+
+        $survey->save(false);
     }
 
     public function uniquePhoneWithoutCode()
@@ -96,20 +114,5 @@ class FromFourthForm extends Model
         }
 
         return $uniqueWithoutCode;
-    }
-
-    private function saveSurvey()
-    {
-        $survey = new Surveys();
-        $survey->phone = mb_ereg_replace('[^0-9]', '', $this->phone);
-        $survey->type = $this->fromThirdForm->secondForm->firstForm->type;
-        $survey->auto = $this->fromThirdForm->secondForm->auto;
-        $survey->district_id = $this->fromThirdForm->secondForm->district_id;
-
-        $survey->price_novorossiysk = $this->fromThirdForm->novorossiyskPrice;
-        $survey->price_azov = $this->fromThirdForm->azovPrice;
-        $survey->price_volna = $this->fromThirdForm->volnaPrice;
-
-        $survey->save(false);
     }
 }

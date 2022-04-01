@@ -3,15 +3,12 @@
 namespace app\forms;
 
 use app\models\Districts;
-use app\models\Regions;
+use Yii;
 use yii\base\Model;
 use yii\web\Cookie;
 
 class FromThirdForm extends Model
 {
-    const TO_TOK_ELEVATOR = 'C поля на ток/элеватор';
-    const FROM_TOK_ELEVATOR = 'С тока/элеватора в порт';
-
     const NUMBER = 3;
 
     public $novorossiyskPrice;
@@ -43,11 +40,10 @@ class FromThirdForm extends Model
             && empty($this->volnaPrice)
         ) {
             $attributes = json_decode(
-                    \Yii::$app->request->cookies->getValue('fromThirdForm', ''),
+                    Yii::$app->request->cookies->getValue('fromThirdForm', ''),
                     true
                 ) ?? [];
             $this->attributes = $attributes;
-//            die(json_encode($attributes));
         }
 
         if (
@@ -62,23 +58,24 @@ class FromThirdForm extends Model
                 ->andWhere($this->secondForm->district_id)
                 ->one();
 
-            return \Yii::$app->controller->render('from_third', [
+            return Yii::$app->controller->render('from_third', [
                 'form' => $this,
                 'district' => $district,
             ]);
         }
 
-        \Yii::$app->response->cookies->add(new Cookie([
+        Yii::$app->response->cookies->add(new Cookie([
             'name' => 'fromThirdForm',
             'value' => json_encode($this->attributes),
             'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
-        $nextForm = \Yii::createObject([
+
+        $nextForm = Yii::createObject([
             'class' => FromFourthForm::class,
             'fromThirdForm' => $this,
         ]);
-        $nextForm->load(\Yii::$app->request->post());
+        $nextForm->load(Yii::$app->request->post());
         return $nextForm->run();
     }
 }

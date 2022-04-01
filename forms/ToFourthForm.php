@@ -7,26 +7,26 @@ use Yii;
 use yii\base\Model;
 use yii\web\Cookie;
 
-class ToThirdForm extends Model
+class ToFourthForm extends Model
 {
-    const NUMBER = 3;
+    const NUMBER = 4;
 
-    public $price_0_10;
+    public $price_40_60;
 
-    public $price_10_20;
+    public $price_60_80;
 
-    public $price_20_40;
+    public $price_80_100;
 
     /**
-     * @var SecondForm
+     * @var ToThirdForm
      */
-    public $secondForm;
+    public $toThirdForm;
 
     public function rules()
     {
         return [
-            [['price_10_20', 'price_0_10', 'price_20_40'], 'required'],
-            [['price_10_20', 'price_0_10', 'price_20_40'], 'integer'],
+            [['price_40_60', 'price_60_80', 'price_80_100'], 'required'],
+            [['price_40_60', 'price_60_80', 'price_80_100'], 'integer'],
         ];
     }
 
@@ -35,12 +35,12 @@ class ToThirdForm extends Model
     {
         if (
             !$this->validate()
-            && empty($this->price_0_10)
-            && empty($this->price_10_20)
-            && empty($this->price_20_40)
+            && empty($this->price_40_60)
+            && empty($this->price_60_80)
+            && empty($this->price_80_100)
         ) {
             $attributes = json_decode(
-                    Yii::$app->request->cookies->getValue('toThirdForm', ''),
+                    Yii::$app->request->cookies->getValue('toFourthForm', ''),
                     true
                 ) ?? [];
             $this->attributes = $attributes;
@@ -48,31 +48,31 @@ class ToThirdForm extends Model
 
         if (
             !$this->validate()
-            || $this->secondForm->firstForm->number == self::NUMBER
+            || $this->toThirdForm->secondForm->firstForm->number == self::NUMBER
         ) {
             $this->clearErrors();
 
             /** @var Districts $district */
             $district = Districts::find()
                 ->with('region')
-                ->andWhere($this->secondForm->district_id)
+                ->andWhere($this->toThirdForm->secondForm->district_id)
                 ->one();
 
-            return Yii::$app->controller->render('to_third', [
+            return Yii::$app->controller->render('to_fourth', [
                 'form' => $this,
                 'district' => $district,
             ]);
         }
 
         Yii::$app->response->cookies->add(new Cookie([
-            'name' => 'toThirdForm',
+            'name' => 'toFourthForm',
             'value' => json_encode($this->attributes),
             'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
         $nextForm = Yii::createObject([
-            'class' => ToFourthForm::class,
-            'toThirdForm' => $this,
+            'class' => ToFifthForm::class,
+            'toFourthForm' => $this,
         ]);
         $nextForm->load(Yii::$app->request->post());
         return $nextForm->run();
