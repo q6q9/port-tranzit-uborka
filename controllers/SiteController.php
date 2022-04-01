@@ -31,15 +31,6 @@ class SiteController extends Controller
      */
     public function actionIndex($number=1)
     {
-//        if (isset($_SERVER['HTTP_COOKIE'])) {
-//            $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
-//            foreach($cookies as $cookie) {
-//                $parts = explode('=', $cookie);
-//                $name = trim($parts[0]);
-//                setcookie($name, '', time()-1000);
-//                setcookie($name, '', time()-1000, '/');
-//            }
-//        }
         $form = new FirstForm(['number' => intval($number)]);
         $form->load(Yii::$app->request->post());
         return $form->run();

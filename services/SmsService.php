@@ -5,6 +5,8 @@ namespace app\services;
 use app\models\SmsCodes;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\httpclient\Client;
+use yii\web\ServerErrorHttpException;
 
 class SmsService extends Model
 {
@@ -80,28 +82,28 @@ class SmsService extends Model
 
         $smsCode->save(false);
 
-//        $client = new \yii\httpclient\Client();
-//        $response = $client->createRequest()
-//            ->setMethod('GET')
-//            ->setUrl($this->api_url)
-//            ->setData([
-//                'user' => $this->api_user,
-//                'pwd' => $this->api_password,
-//                'sadr' => $this->api_sender,
-//                'dadr' => $phone,
-//                'text' => 'Код подтверждения: ' . $smsCode->code,
-//            ])
-//            ->send();
-//
-//        $smsCode->api_response = $response->content;
-//        $smsCode->update(false);
-//
-//        if (!$response->isOk) {
-//            throw new \yii\web\ServerErrorHttpException('Error sms sending');
-//        }
-//
-//        if (!empty(mb_ereg_replace('[0-9]+', '', $response->content))) {
-//            throw new \yii\web\ServerErrorHttpException('Error sms sending');
-//        }
+        $client = new Client();
+        $response = $client->createRequest()
+            ->setMethod('GET')
+            ->setUrl($this->api_url)
+            ->setData([
+                'user' => $this->api_user,
+                'pwd' => $this->api_password,
+                'sadr' => $this->api_sender,
+                'dadr' => $phone,
+                'text' => 'Код подтверждения: ' . $smsCode->code,
+            ])
+            ->send();
+
+        $smsCode->api_response = $response->content;
+        $smsCode->update(false);
+
+        if (!$response->isOk) {
+            throw new ServerErrorHttpException('Error sms sending');
+        }
+
+        if (!empty(mb_ereg_replace('[0-9]+', '', $response->content))) {
+            throw new ServerErrorHttpException('Error sms sending');
+        }
     }
 }
