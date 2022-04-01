@@ -3,9 +3,8 @@
 namespace app\forms;
 
 use app\models\Districts;
-use app\models\Regions;
+use Yii;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 use yii\web\Cookie;
 
 class FromFourthForm extends Model
@@ -30,7 +29,7 @@ class FromFourthForm extends Model
     {
         if (!$this->validate() && empty($phone)) {
             $attributes = json_decode(
-                    \Yii::$app->request->cookies->getValue('fromFourthForm', ''),
+                    Yii::$app->request->cookies->getValue('fromFourthForm', ''),
                     true
                 ) ?? [];
             $this->attributes = $attributes;
@@ -46,25 +45,24 @@ class FromFourthForm extends Model
                 ->andWhere($this->fromThirdForm->secondForm->district_id)
                 ->one();
 
-            return \Yii::$app->controller->render('from_fourth', [
+            return Yii::$app->controller->render('from_fourth', [
                 'form' => $this,
                 'district' => $district,
             ]);
         }
 
 
-        \Yii::$app->response->cookies->add(new Cookie([
+        Yii::$app->response->cookies->add(new Cookie([
             'name' => 'fromFourthForm',
             'value' => json_encode($this->attributes),
             'expire' => time() + 356 * 12 * 24 * 60 * 60
         ]));
 
-        die(json_encode($this->attributes));
-        $nextForm = \Yii::createObject([
-            'class' => $nextFormClass,
-            'secondForm' => $this,
+        $nextForm = Yii::createObject([
+            'class' => FromFifthForm::class,
+            'fromFourthForm' => $this,
         ]);
-        $nextForm->load(\Yii::$app->request->post());
+        $nextForm->load(Yii::$app->request->post());
         return $nextForm->run();
     }
 }

@@ -2,31 +2,30 @@
 
 /** @var yii\web\View $this */
 
-/** @var FromFourthForm $form */
+/** @var FromFifthForm $form */
 
 /** @var Districts $district */
 
 use app\forms\FirstForm;
-use app\forms\FromFourthForm;
+use app\forms\FromFifthForm;
 use app\models\Districts;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$fromThirdForm = $form->fromThirdForm;
+$fromFourthForm = $form->fromFourthForm;
+$fromThirdForm = $fromFourthForm->fromThirdForm;
 $secondForm = $fromThirdForm->secondForm;
 
 $this->title = 'Анкета';
 ?>
 <div class="d-flex flex-column" style="min-height: 100%">
     <?php $activeForm = ActiveForm::begin([
-        'action' => Url::to(['/5']),
         'method' => 'POST',
         'options' => ['style' => 'flex: 1 1 auto', 'id' => 'form']
     ]) ?>
 
     <div class="d-flex justify-content-between" style="margin-bottom: -25px">
-        <?= Html::a('< назад', '/3') ?>
+        <?= Html::a('< назад', '/4') ?>
         <p>Моя заявка</p>
     </div>
     <hr>
@@ -77,10 +76,18 @@ $this->title = 'Анкета';
             <?= $fromThirdForm->volnaPrice ?> руб/т
         </p>
     </div>
+    <hr>
+    <div class="d-flex justify-content-between mb-4" style="line-height: 14px;">
+        <p>Телефон</p>
+        <p class="font-weight-bold">
+            <?= $fromFourthForm->phone ?>
+        </p>
+    </div>
 
-    <?= $activeForm->field($form, 'phone', ['options' => [
+
+    <?= $activeForm->field($form, 'code', ['options' => [
     ]])
-        ->label('Ваш телефон для связи', ['style' => 'flex: 1 0 50%; font-weight: bold'])
+        ->label('Введите код из смс', ['style' => 'flex: 1 0 50%; font-weight: bold'])
         ->input('tel', [
             'class' => 'form-control bg-gray w-100',
             'id' => 'phone'
@@ -99,49 +106,5 @@ $this->title = 'Анкета';
 
 
 <script>
-    let param,
-        token,
-        globalPhone
-
-    addEventListener('load', () => {
-        token = yii.getCsrfToken()
-        param = yii.getCsrfParam()
-
-
-        $("form").submit(async function (e) {
-            e.preventDefault()
-
-            const phone = $('#phone').val()
-            console.log(phone)
-            if (!phone || phone == globalPhone) {
-                return;
-            }
-
-            globalPhone = phone
-
-            await sendCode(phone)
-            e.target.submit()
-        });
-    })
-
-
-    async function sendCode(phone) {
-        if (!phone) {
-            console.error('empty phone')
-            return;
-        }
-
-        try {
-            let data = {}
-            data[param] = token;
-            return await $.ajax({
-                url: '/api/send-code?phone=' + phone,
-                type: 'POST',
-                data: data
-            });
-        } catch (e) {
-            alert('Error sms sending')
-        }
-    }
 </script>
 
