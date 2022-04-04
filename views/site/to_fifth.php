@@ -10,11 +10,17 @@ use app\forms\FirstForm;
 use app\models\Districts;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\JqueryAsset;
 use yii\widgets\ActiveForm;
 
 $toFourthForm = $form->toFourthForm;
 $toThirdForm = $toFourthForm->toThirdForm;
 $secondForm = $toThirdForm->secondForm;
+
+$this->registerJsFile(
+    '/js/jquery.maskedinput.min.js',
+    ['depends' => [JqueryAsset::className()]]
+);
 
 $this->title = 'Анкета';
 ?>
@@ -132,6 +138,7 @@ $this->title = 'Анкета';
         token = yii.getCsrfToken()
         param = yii.getCsrfParam()
 
+        $('#phone').mask("7(999) 999-9999");
 
         $("form").submit(async function (e) {
             e.preventDefault()
