@@ -76,7 +76,8 @@ class ToSixthForm extends Model
     private function updateSurvey()
     {
         $survey = Surveys::findOne([
-            'phone' => mb_ereg_replace('[^0-9]', '', $this->toFifthForm->phone)
+            'phone' => mb_ereg_replace('[^0-9]', '', $this->toFifthForm->phone),
+            'type' => FirstForm::TO_TOK_ELEVATOR
         ]);
         $survey->code = $this->code;
         $survey->update(false);

@@ -79,7 +79,10 @@ class ToFifthForm extends Model
     public function uniquePhone()
     {
         return !Surveys::find()
-            ->andWhere(['phone' => mb_ereg_replace('[^0-9]', '', $this->phone)])
+            ->andWhere([
+                'phone' => mb_ereg_replace('[^0-9]', '', $this->phone),
+                'type' => FirstForm::TO_TOK_ELEVATOR
+            ])
             ->exists();
     }
 
@@ -107,6 +110,7 @@ class ToFifthForm extends Model
         $uniqueWithoutCode = Surveys::find()
             ->andWhere(['phone' => mb_ereg_replace('[^0-9]', '', $this->phone)])
             ->andWhere(['code' => null])
+            ->andWhere(['type' => FirstForm::TO_TOK_ELEVATOR])
             ->exists();
 
         if (!$uniqueWithoutCode) {

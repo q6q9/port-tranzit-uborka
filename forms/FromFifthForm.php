@@ -76,7 +76,8 @@ class FromFifthForm extends Model
     private function updateSurvey()
     {
         $survey = Surveys::findOne([
-            'phone' => mb_ereg_replace('[^0-9]', '', $this->fromFourthForm->phone)
+            'phone' => mb_ereg_replace('[^0-9]', '', $this->fromFourthForm->phone),
+            'type' => FirstForm::FROM_TOK_ELEVATOR
         ]);
         $survey->code = $this->code;
         $survey->update(false);

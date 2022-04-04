@@ -113,7 +113,7 @@ $this->title = 'Анкета';
         token = yii.getCsrfToken()
         param = yii.getCsrfParam()
 
-        $('#phone').mask("7(999) 999-9999");
+        $('#phone').mask("+7(999) 999-9999");
 
         $("form").submit(async function (e) {
             e.preventDefault()
@@ -142,7 +142,7 @@ $this->title = 'Анкета';
             let data = {}
             data[param] = token;
             return await $.ajax({
-                url: '/api/send-code?phone=' + phone,
+                url: '/api/send-code?phone=' + phone + '&type=' + '<?=FirstForm::FROM_TOK_ELEVATOR?>',
                 type: 'POST',
                 data: data
             });
