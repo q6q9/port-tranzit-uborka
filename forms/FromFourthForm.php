@@ -82,7 +82,7 @@ class FromFourthForm extends Model
         return !Surveys::find()
             ->andWhere([
                 'phone' => mb_ereg_replace('[^0-9]', '', $this->phone),
-                'type' => FirstForm::TO_TOK_ELEVATOR
+                'type' => FirstForm::FROM_TOK_ELEVATOR
             ])
             ->exists();
     }
