@@ -26,7 +26,7 @@ $this->title = 'Анкета';
     ]) ?>
 
     <div class="d-flex justify-content-between" style="margin-bottom: -25px">
-        <?= Html::a('< назад', '/7') ?>
+        <?= Html::a('< назад', '/5') ?>
         <p>Моя заявка</p>
     </div>
     <hr>

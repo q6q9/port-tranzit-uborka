@@ -92,7 +92,7 @@ class FromFourthForm extends Model
             ->exists();
 
         if (!$uniqueWithoutCode) {
-            $this->addError('phone', 'This phone already took survey');
+            $this->addError('phone', 'Этот телефон уже участвовал');
         }
 
         return $uniqueWithoutCode;

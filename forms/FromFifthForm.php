@@ -46,7 +46,7 @@ class FromFifthForm extends Model
 
         $checkCode = $this->smsService->checkCode($this->fromFourthForm->phone, $this->code);
         if (!$checkCode) {
-            $this->addError('code', 'Incorrect code');
+            $this->addError('code', 'Неверный код');
             return $this->render();
         }
 
