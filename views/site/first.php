@@ -22,7 +22,11 @@ $this->title = 'Анкета';
         ]
     ]) ?>
 
-    <img src="/images/9a609fc952194b5676d66842f8a9d2ce.jpg" alt="" class="mb-3">
+    <img style="
+      display: flex;
+      align-items: flex-start;
+    "
+         src="/images/9a609fc952194b5676d66842f8a9d2ce.jpg" alt="" class="mb-3">
     <p class="font-weight-bold text-center mb-4" style="font-size: 19px">
         Чтобы записаться на уборку 2022г. заполните форму ниже
     </p>
