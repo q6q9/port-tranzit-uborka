@@ -64,7 +64,7 @@ class FromFifthForm extends Model
         /** @var Districts $district */
         $district = Districts::find()
             ->with('region')
-            ->andWhere($this->fromFourthForm->fromThirdForm->secondForm->district_id)
+            ->andWhere(['id' => $this->fromFourthForm->fromThirdForm->secondForm->district_id])
             ->one();
 
         return Yii::$app->controller->render('from_fifth', [

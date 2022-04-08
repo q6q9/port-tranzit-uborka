@@ -55,9 +55,9 @@ $this->title = 'Анкета';
 
     <hr class="mb-4">
 
-    <p class="text-center font-weight-bold" style="margin-bottom: 2px; font-size: 18px">Предложите ваши расценки в
+    <p class="text-center font-weight-bold mb-5" style="margin-bottom: 2px; font-size: 18px">Предложите ваши расценки в
         руб/т</p>
-    <p class="text-center" style="line-height: 18px">С вашего района в следующие порты</p>
+    
 
     <?= $activeForm->field($form, 'price_0_10', ['options' => [
         'class' => 'd-flex justify-content-between flex-wrap mb-3'

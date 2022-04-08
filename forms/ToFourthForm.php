@@ -55,7 +55,7 @@ class ToFourthForm extends Model
             /** @var Districts $district */
             $district = Districts::find()
                 ->with('region')
-                ->andWhere($this->toThirdForm->secondForm->district_id)
+                ->andWhere(['id' => $this->toThirdForm->secondForm->district_id])
                 ->one();
 
             return Yii::$app->controller->render('to_fourth', [

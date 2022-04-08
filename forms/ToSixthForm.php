@@ -64,7 +64,7 @@ class ToSixthForm extends Model
         /** @var Districts $district */
         $district = Districts::find()
             ->with('region')
-            ->andWhere($this->toFifthForm->toFourthForm->toThirdForm->secondForm->district_id)
+            ->andWhere(['id' => $this->toFifthForm->toFourthForm->toThirdForm->secondForm->district_id])
             ->one();
 
         return Yii::$app->controller->render('to_sixth', [
